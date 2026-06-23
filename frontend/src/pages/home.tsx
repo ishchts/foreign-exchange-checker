@@ -1,14 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { currencies } from "../shared/api/api-client";
+import { Headline } from "./components/headline";
+import { MarketTicker } from "./components/MarketTicker";
 
 export const Home = () => {
-  const { data } = useQuery({
-    queryKey: ['getCurrencies'],
-    queryFn: async () => {
-        const res = await currencies.getCurrencies();
-        return res.data;
-    }
-  });
-
-  return <div>{data?.slice(0, 11).map((el) => el.iso_code)}</div>;
+  return (
+    <div className="max-w-325 m-auto pt-15">
+      <Headline />
+      <MarketTicker />
+    </div>
+  );
 };
