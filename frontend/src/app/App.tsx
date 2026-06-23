@@ -1,3 +1,15 @@
+import { Home } from "../pages/home";
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 export const App = () => {
-  return <div className="bg-black h-full">App</div>;
+  const [queryClient] = useState(new QueryClient());
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <div className="bg-black h-full">
+        <Home />
+      </div>
+    </QueryClientProvider>
+  );
 };
