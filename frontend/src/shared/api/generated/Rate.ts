@@ -10,7 +10,7 @@
  * ---------------------------------------------------------------
  */
 
-import { Rate } from "./data-contracts";
+import { GetRateParams, Rate } from "./data-contracts";
 import { HttpClient, RequestParams } from "./http-client";
 
 export class Rate<
@@ -24,21 +24,7 @@ export class Rate<
    * @request GET:/rate/{base}/{quote}
    */
   getRate = (
-    base: string,
-    quote: string,
-    query?: {
-      /**
-       * Specific date (YYYY-MM-DD). Cannot be combined with from/to.
-       * @format date
-       * @example "2024-01-15"
-       */
-      date?: string;
-      /**
-       * Comma-separated list of data providers to include
-       * @example "ECB,TCMB"
-       */
-      providers?: string;
-    },
+    { base, quote, ...query }: GetRateParams,
     params: RequestParams = {},
   ) =>
     this.request<

@@ -10,7 +10,7 @@
  * ---------------------------------------------------------------
  */
 
-import { CurrencyDetail } from "./data-contracts";
+import { CurrencyDetail, GetCurrencyParams } from "./data-contracts";
 import { HttpClient, RequestParams } from "./http-client";
 
 export class Currency<
@@ -23,7 +23,7 @@ export class Currency<
    * @summary Get a single currency
    * @request GET:/currency/{code}
    */
-  getCurrency = (code: string, params: RequestParams = {}) =>
+  getCurrency = ({ code }: GetCurrencyParams, params: RequestParams = {}) =>
     this.request<
       CurrencyDetail,
       {

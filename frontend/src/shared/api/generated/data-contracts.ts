@@ -122,3 +122,83 @@ export interface Provider {
   /** Currency codes covered by this provider */
   currencies: string[];
 }
+
+export interface GetRatesParams {
+  /**
+   * Specific date (YYYY-MM-DD). Cannot be combined with from/to.
+   * @format date
+   * @example "2024-01-15"
+   */
+  date?: string;
+  /**
+   * Start of date range (YYYY-MM-DD)
+   * @format date
+   * @example "2024-01-01"
+   */
+  from?: string;
+  /**
+   * End of date range (YYYY-MM-DD). Defaults to today.
+   * @format date
+   * @example "2024-01-31"
+   */
+  to?: string;
+  /**
+   * Base currency (default: EUR)
+   * @default "EUR"
+   * @example "USD"
+   */
+  base?: string;
+  /**
+   * Comma-separated list of quote currencies to include
+   * @example "USD,GBP,JPY"
+   */
+  quotes?: string;
+  /**
+   * Comma-separated list of data providers to include
+   * @example "ECB,TCMB"
+   */
+  providers?: string;
+  /**
+   * Downsample rates by time period. Only applies to date ranges.
+   * @example "month"
+   */
+  group?: "week" | "month";
+  /**
+   * Comma-separated list of optional fields to include per record. Currently supports `providers`, which adds an array of `{ key, rate }` objects per record showing each provider's individual rate. Outliers excluded from the blend (and providers whose rate was overridden by a currency peg) are flagged with `excluded: true`. The field is omitted on synthesized peg rows where no provider published the quote. In CSV output, the `providers` column is encoded as `KEY:RATE` pairs joined by `|`, with a trailing `*` on excluded entries (e.g. `ECB:0.92|FED:1.50*`).
+   * @example "providers"
+   */
+  expand?: "providers";
+}
+
+export interface GetRateParams {
+  /**
+   * Specific date (YYYY-MM-DD). Cannot be combined with from/to.
+   * @format date
+   * @example "2024-01-15"
+   */
+  date?: string;
+  /**
+   * Comma-separated list of data providers to include
+   * @example "ECB,TCMB"
+   */
+  providers?: string;
+  /** @example "EUR" */
+  base: string;
+  /** @example "USD" */
+  quote: string;
+}
+
+export interface GetCurrencyParams {
+  /** @example "USD" */
+  code: string;
+}
+
+export interface GetCurrenciesParams {
+  /** Set to 'all' to include legacy currencies */
+  scope?: "all";
+  /**
+   * Comma-separated list of data providers to include
+   * @example "ECB,TCMB"
+   */
+  providers?: string;
+}

@@ -10,7 +10,7 @@
  * ---------------------------------------------------------------
  */
 
-import { Currency } from "./data-contracts";
+import { Currency, GetCurrenciesParams } from "./data-contracts";
 import { HttpClient, RequestParams } from "./http-client";
 
 export class Currencies<
@@ -24,15 +24,7 @@ export class Currencies<
    * @request GET:/currencies
    */
   getCurrencies = (
-    query?: {
-      /** Set to 'all' to include legacy currencies */
-      scope?: "all";
-      /**
-       * Comma-separated list of data providers to include
-       * @example "ECB,TCMB"
-       */
-      providers?: string;
-    },
+    query: GetCurrenciesParams = {},
     params: RequestParams = {},
   ) =>
     this.request<Currency[], any>({
