@@ -1,4 +1,4 @@
-import { Home } from "../pages/home";
+import { Home } from "../pages/Home";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

@@ -17,3 +17,80 @@ body {
     color: #fff;
     font-size: 16px;
 }
+
+@theme {
+    --font-mono: "JetBrains Mono", monospace;
+
+    --color-neutral-0: #ffffff;
+    --color-neutral-200: #9d9d9d;
+    --color-neutral-900: #050505;
+    --color-brand-lime: #cef739;
+
+    --text-preset-1: 40px;
+    --leading-preset-1: 1;
+    --tracking-preset-1: -0.5px;
+
+    --text-preset-1-tablet: 32px;
+    --leading-preset-1-tablet: 1;
+    --tracking-preset-1-tablet: -0.5px;
+
+    --text-preset-2: 20px;
+    --leading-preset-2: 1.2;
+    --tracking-preset-2: -0.5px;
+
+    --text-preset-2-bold: 20px;
+    --leading-preset-2-bold: 1.4;
+    --tracking-preset-2-bold: -0.5px;
+
+    --text-preset-3: 16px;
+    --leading-preset-3: 1.2;
+    --tracking-preset-3: 1px;
+
+    --text-preset-3-medium: 16px;
+    --leading-preset-3-medium: 1.2;
+    --tracking-preset-3-medium: 1px;
+
+    --text-preset-3-bold: 16px;
+    --leading-preset-3-bold: 1.1;
+    --tracking-preset-3-bold: 1px;
+
+    --text-preset-4: 14px;
+    --leading-preset-4: 1.2;
+    --tracking-preset-4: 1px;
+
+    --text-preset-5: 12px;
+    --leading-preset-5: 1.2;
+    --tracking-preset-5: 0.5px;
+
+    --text-preset-5-medium: 12px;
+    --leading-preset-5-medium: 1.3;
+    --tracking-preset-5-medium: 0.5px;
+
+    --text-preset-6: 10px;
+    --leading-preset-6: 1;
+    --tracking-preset-6: 0px;
+}
+
+@keyframes market-ticker-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-25%);
+    }
+}
+
+.market-ticker-track {
+    animation: market-ticker-scroll 24s linear infinite;
+}
+
+.market-ticker-track:hover {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .market-ticker-track {
+        animation: none;
+    }
+}

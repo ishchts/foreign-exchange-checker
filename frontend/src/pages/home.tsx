@@ -1,4 +1,4 @@
-import { Headline } from "./components/headline";
+import { Headline } from "./components/Headline";
 import { MarketTicker } from "./components/MarketTicker";
 
 export const Home = () => {
