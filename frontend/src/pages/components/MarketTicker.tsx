@@ -99,7 +99,7 @@ export const MarketTicker = () => {
       className="flex h-10 overflow-hidden bg-[#171717]"
       aria-label="Live markets"
     >
-      <div className="flex h-full w-31 shrink-0 items-center justify-center gap-2 bg-brand-lime text-preset-6 font-bold leading-preset-6 tracking-preset-6 text-black">
+      <div className="flex h-full w-34.5 shrink-0 items-center justify-center gap-2 bg-brand-lime text-black typography-preset-5-medium">
         <span className="h-1 w-1 rounded-full bg-black" aria-hidden="true" />
         <span>LIVE MARKETS</span>
       </div>
@@ -109,7 +109,7 @@ export const MarketTicker = () => {
           {tickerRows.map((item, index) => (
             <div
               key={`${item.pair}-${index}`}
-              className="flex min-w-52 items-center justify-between border-r border-[#2a2a2a] bg-[#171717] px-4 text-preset-5 leading-preset-5 tracking-preset-5"
+              className="flex min-w-52 items-center justify-between border-r border-[#2a2a2a] bg-[#171717] px-4 typography-preset-5"
             >
               <span className="text-neutral-200">{item.pair}</span>
               <span className="text-neutral-0">{formatRate(item.rate)}</span>
