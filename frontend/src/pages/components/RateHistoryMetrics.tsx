@@ -21,14 +21,14 @@ const RateMetricCard: React.FC<RateMetricCardProps> = ({
   return (
     <div
       aria-label="Rate Metric"
-      className="py-[12px] px-[20px] rounded-16 border border-neutral-700 min-w-[140px]"
+      className="min-w-[128px] rounded-16 border border-[#2a2a2a] bg-[#171717] px-250 py-200"
     >
-      <div className="text-preset-4 text-neutral-50 opacity-[0.7] mb-[11px]">
+      <div className="typography-preset-5 mb-150 text-neutral-200">
         {title}
       </div>
       <div
         className={cn("typography-preset-2 flex items-center gap-100", {
-          ["text-green-500"]: tone === "positive",
+          ["text-brand-lime"]: tone === "positive",
           ["text-red-500"]: tone === "negative",
         })}
       >
@@ -36,7 +36,7 @@ const RateMetricCard: React.FC<RateMetricCardProps> = ({
           <Triangle
             aria-hidden="true"
             className={cn("size-3 fill-current", {
-              "rotate-180": tone === "negative",  
+              "rotate-180": tone === "negative",
             })}
           />
         )}

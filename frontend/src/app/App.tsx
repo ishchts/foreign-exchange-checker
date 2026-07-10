@@ -7,7 +7,7 @@ export const App = () => {
   
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="bg-black h-full">
+      <div className="bg-black min-h-full">
         <Home />
       </div>
     </QueryClientProvider>

@@ -2,6 +2,7 @@ import { rates } from "@/shared/api/api-client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { RateHistoryChart } from "./RateHistoryChart";
 import { RateHistoryMetrics } from "./RateHistoryMetrics";
 import { RateHistoryRangeFilter, RateRange } from "./RateHistoryRangeFilter";
 
@@ -52,7 +53,7 @@ export const CurrencyInsights = () => {
       return data;
     },
   });
-  console.log('rateHistory', rateHistory);
+
   return (
     <section className="mt-8.25" aria-label="Currency insights">
       <Tabs defaultValue="HISTORY">
@@ -88,6 +89,9 @@ export const CurrencyInsights = () => {
               onChange={handleActiveRange}
             />
           </div>
+          {rateHistory && rateHistory.length > 0 && (
+            <RateHistoryChart data={rateHistory} range={activeRange} />
+          )}
         </TabsContent>
         <TabsContent value="COMPARE">COMPARE</TabsContent>
         <TabsContent value="FAVORITES">FAVORITES</TabsContent>
