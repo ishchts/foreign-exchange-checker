@@ -19,10 +19,10 @@ export const Home = () => {
     normalizedAmount > 0;
 
   return (
-    <div className="max-w-360 m-auto pt-15">
+    <div className="mx-auto max-w-360">
       <Headline />
       <MarketTicker />
-      <div className="max-w-275 m-auto pt-600 px-400">
+      <main className="mx-auto max-w-275 px-200 pt-600 md:px-400">
         <CurrencyConverter
           amount={amount}
           onAmountChange={setAmount}
@@ -30,7 +30,7 @@ export const Home = () => {
           onPairChange={setPair}
         />
         <CurrencyInsights pair={pair} hasValidAmount={hasValidAmount} />
-      </div>
+      </main>
     </div>
   );
 };

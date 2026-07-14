@@ -21,7 +21,7 @@ const RateMetricCard: React.FC<RateMetricCardProps> = ({
   return (
     <div
       aria-label="Rate Metric"
-      className="min-w-[128px] rounded-16 border border-[#2a2a2a] bg-[#171717] px-250 py-200"
+      className="min-w-0 rounded-16 border border-[#2a2a2a] bg-[#171717] px-200 py-200 md:px-250"
     >
       <div className="typography-preset-5 mb-150 text-neutral-200">
         {title}
@@ -58,9 +58,9 @@ export const RateHistoryMetrics: React.FC<RateHistoryMetricsProps> = ({
   const percentChange = (change / open) * 100;
 
   return (
-    <div className="flex max-w-[630px] gap-[16px]">
-      <RateMetricCard title={"OPEN"} value={open.toString()} />
-      <RateMetricCard title={"LAST"} value={last.toString()} />
+    <div className="grid w-full grid-cols-2 gap-150 md:grid-cols-4 md:gap-200 lg:max-w-[630px]">
+      <RateMetricCard title="OPEN" value={open.toFixed(4)} />
+      <RateMetricCard title="LAST" value={last.toFixed(4)} />
       <RateMetricCard
         title={"CHANGE"}
         value={`${change >= 0 ? "+" : ""}${change.toFixed(4)}`}

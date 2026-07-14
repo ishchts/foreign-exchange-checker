@@ -9,8 +9,8 @@ type RateHistoryRangeFilterProps = {
 };
 
 type Item = {
-    label: RateRange
-}
+  label: RateRange;
+};
 
 const items: Item[] = [
   { label: "1D" },
@@ -24,12 +24,12 @@ const items: Item[] = [
 export const RateHistoryRangeFilter: React.FC<RateHistoryRangeFilterProps> = ({
   className,
   value,
-  onChange
+  onChange,
 }) => {
   return (
     <div
       className={cn(
-        "bg-neutral-700 h-[42px] flex typography-preset-5 text-neutral-200 rounded-8",
+        "typography-preset-5 grid h-[42px] w-full grid-cols-6 rounded-8 bg-neutral-700 text-neutral-200 md:flex md:w-fit",
         className,
       )}
     >
@@ -37,9 +37,12 @@ export const RateHistoryRangeFilter: React.FC<RateHistoryRangeFilterProps> = ({
         <button
           key={el.label}
           type="button"
-          className={cn("w-[47px] cursor-pointer rounded-8 outline-none transition-colors hover:bg-neutral-600 focus-visible:ring-1 focus-visible:ring-brand-lime", {
-            ["text-white bg-neutral-500"]: value === el.label,
-          })}
+          className={cn(
+            "min-w-0 cursor-pointer rounded-8 outline-none transition-colors hover:bg-neutral-600 focus-visible:ring-1 focus-visible:ring-brand-lime md:w-[47px]",
+            {
+              "bg-neutral-500 text-white": value === el.label,
+            },
+          )}
           onClick={() => onChange(el.label)}
         >
           {el.label}

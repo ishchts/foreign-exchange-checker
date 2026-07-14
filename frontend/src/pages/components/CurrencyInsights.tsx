@@ -84,22 +84,22 @@ export const CurrencyInsights = ({
     (!isPending && !hasRateHistory);
 
   return (
-    <section className="mt-8.25" aria-label="Currency insights">
+    <section className="mt-400" aria-label="Currency insights">
       <Tabs defaultValue="HISTORY">
         <TabsList>
-          <TabsTrigger className="px-[20px]" value="HISTORY">
+          <TabsTrigger className="px-150 md:px-250" value="HISTORY">
             HISTORY
           </TabsTrigger>
-          <TabsTrigger className="px-[20px]" value="COMPARE">
+          <TabsTrigger className="px-150 md:px-250" value="COMPARE">
             COMPARE
           </TabsTrigger>
-          <TabsTrigger className="px-[20px]" value="FAVORITES">
+          <TabsTrigger className="px-150 md:px-250" value="FAVORITES">
             FAVORITES
             <span className="min-w-[20px] typography-preset-6 rounded-full bg-brand-lime/15 p-1.25 text-brand-lime">
               10
             </span>
           </TabsTrigger>
-          <TabsTrigger className="px-[20px]" value="LOG">
+          <TabsTrigger className="px-150 md:px-250" value="LOG">
             LOG
             <span className="min-w-[20px] typography-preset-6 rounded-full bg-brand-lime/15 p-1.25 text-brand-lime">
               8
@@ -110,12 +110,11 @@ export const CurrencyInsights = ({
         <TabsContent value="HISTORY">
           {canShowHistory && rateHistory && (
             <>
-              <div className="flex items-center">
+              <div className="flex flex-col gap-200 lg:flex-row lg:items-center lg:justify-between">
                 {rateHistory.length > 1 && (
                   <RateHistoryMetrics rate={rateHistory} />
                 )}
                 <RateHistoryRangeFilter
-                  className="ml-auto mr-0"
                   value={activeRange}
                   onChange={handleActiveRange}
                 />

@@ -127,8 +127,8 @@ export const CurrencyConverter = ({
       </h2>
 
       <div className="h-auto rounded-20 bg-[#171717] md:h-[223px]">
-        <div className="grid items-center gap-150 p-200 md:grid-cols-[1fr_48px_1fr]">
-          <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-[20px]">
+        <div className="grid items-center gap-150 p-200 md:grid-cols-[minmax(0,1fr)_48px_minmax(0,1fr)]">
+          <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-200 md:p-250">
             <label
               htmlFor="send-amount"
               className="typography-preset-5-medium mb-150 block text-neutral-200"
@@ -143,7 +143,7 @@ export const CurrencyConverter = ({
                   onChange={(event) => handleInputChange(event.target.value)}
                   id="send-amount"
                   className={cn(
-                    "typography-preset-1 field-sizing-content block h-600 min-w-[1ch] max-w-full rounded-6 border border-transparent bg-transparent px-050 text-neutral-0 outline-none placeholder:text-neutral-200 focus-visible:border-brand-lime",
+                    "typography-preset-1-tablet lg:typography-preset-1 field-sizing-content block h-600 min-w-[1ch] max-w-full rounded-6 border border-transparent bg-transparent px-050 text-neutral-0 outline-none placeholder:text-neutral-200 focus-visible:border-brand-lime",
                     amount &&
                       "border-b-[#2a2a2a] hover:border-b-[#666]",
                   )}
@@ -163,14 +163,14 @@ export const CurrencyConverter = ({
 
           <button
             type="button"
-            className="flex size-600 cursor-pointer items-center justify-center rounded-10 border border-[#2a2a2a] bg-[#1f1f1f] text-neutral-0 outline-none transition-colors hover:bg-[#2a2a2a] focus-visible:border-brand-lime"
+            className="flex size-600 cursor-pointer items-center justify-center justify-self-center rounded-10 border border-[#2a2a2a] bg-[#1f1f1f] text-neutral-0 outline-none transition-colors hover:bg-[#2a2a2a] focus-visible:border-brand-lime md:justify-self-auto"
             aria-label="Swap currencies"
             onClick={handleSwap}
           >
             <img src="/images/icon-exchange.svg" alt="" className="size-200" />
           </button>
 
-          <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-[20px]">
+          <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-200 md:p-250">
             <span className="typography-preset-5-medium mb-150 block text-neutral-200">
               RECEIVE
             </span>
@@ -179,7 +179,7 @@ export const CurrencyConverter = ({
               <output
                 htmlFor="send-amount"
                 aria-live="polite"
-                className="typography-preset-1 block min-w-0 flex-1 text-brand-lime"
+                className="typography-preset-1-tablet lg:typography-preset-1 block min-w-0 flex-1 text-brand-lime"
               >
                 {outputValue}
               </output>
@@ -198,11 +198,11 @@ export const CurrencyConverter = ({
             1 {pair.base} = {rate ? rate.toFixed(4) : "----"} {pair.quote}
           </p>
 
-          <div className="mt-200 flex flex-wrap gap-100 md:mt-0">
+          <div className="mt-200 grid w-full max-w-[257px] grid-cols-[1fr_1.13fr] gap-100 md:mt-0">
             <button
               type="button"
               className={cn(
-                "typography-preset-5-medium flex h-400 w-[117px] cursor-pointer items-center justify-center gap-100 rounded-6 border outline-none transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
+                "typography-preset-5-medium flex h-400 w-full cursor-pointer items-center justify-center gap-100 rounded-6 border outline-none transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
                 isCurrentPairFavorite
                   ? "border-brand-lime bg-brand-lime text-black hover:bg-brand-lime/80"
                   : "border-brand-lime bg-transparent text-neutral-0 hover:bg-brand-lime/15",
@@ -225,7 +225,7 @@ export const CurrencyConverter = ({
             <button
               type="button"
               className={cn(
-                "typography-preset-5-medium flex h-400 w-[132px] items-center justify-center gap-100 rounded-6 border outline-none transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
+                "typography-preset-5-medium flex h-400 w-full items-center justify-center gap-100 rounded-6 border outline-none transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
                 isLogged
                   ? "cursor-not-allowed border-brand-lime bg-brand-lime text-black"
                   : hasValidConversion
