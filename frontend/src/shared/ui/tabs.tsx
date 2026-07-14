@@ -45,7 +45,7 @@ function TabsTrigger({
         "typography-preset-3 relative flex h-500 shrink-0 items-center text-neutral-50 transition-colors gap-2",
         "after:absolute after:inset-x-0 after:bottom-0 after:h-025 after:bg-brand-lime after:opacity-0 after:transition-opacity",
         "hover:text-neutral-0",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
+        "focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
         "disabled:pointer-events-none disabled:opacity-50",
         "data-[state=active]:text-neutral-0 data-[state=active]:after:opacity-100",
         className
@@ -64,7 +64,7 @@ function TabsContent({
       data-slot="tabs-content"
       className={cn(
         "text-neutral-0 outline-none",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
+        "focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
         className
       )}
       {...props}

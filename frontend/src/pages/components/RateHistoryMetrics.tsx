@@ -63,7 +63,7 @@ export const RateHistoryMetrics: React.FC<RateHistoryMetricsProps> = ({
       <RateMetricCard title={"LAST"} value={last.toString()} />
       <RateMetricCard
         title={"CHANGE"}
-        value={`${change >= 0 ? "+" : "-"}${change.toFixed(4)}`}
+        value={`${change >= 0 ? "+" : ""}${change.toFixed(4)}`}
         tone={change >= 0 ? "positive" : "negative"}
       />
       <RateMetricCard

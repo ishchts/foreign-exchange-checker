@@ -37,7 +37,7 @@ export const RateHistoryRangeFilter: React.FC<RateHistoryRangeFilterProps> = ({
         <button
           key={el.label}
           type="button"
-          className={cn("rounded-8 w-[47px] cursor-pointer", {
+          className={cn("w-[47px] cursor-pointer rounded-8 outline-none transition-colors hover:bg-neutral-600 focus-visible:ring-1 focus-visible:ring-brand-lime", {
             ["text-white bg-neutral-500"]: value === el.label,
           })}
           onClick={() => onChange(el.label)}
