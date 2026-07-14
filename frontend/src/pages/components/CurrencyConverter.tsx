@@ -1,4 +1,122 @@
-export const CurrencyConverter = () => {
+import { useConversionLog } from "@/entities/conversion-log";
+import type { CurrencyPair } from "@/entities/currency-pair";
+import { useFavoritePairs } from "@/entities/favorite-pair";
+import { CurrencyPicker } from "@/features/currency-picker";
+import { rates } from "@/shared/api/api-client";
+import { cn } from "@/shared/lib/cn";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+
+type CurrencyConverterProps = {
+  amount: string;
+  onAmountChange: (amount: string) => void;
+  onPairChange: (pair: CurrencyPair) => void;
+  pair: CurrencyPair;
+};
+
+export const CurrencyConverter = ({
+  amount,
+  onAmountChange,
+  onPairChange,
+  pair,
+}: CurrencyConverterProps) => {
+  const [loggedSignature, setLoggedSignature] = useState<string | null>(null);
+  const [announcement, setAnnouncement] = useState("");
+  const { isFavorite, toggleFavorite } = useFavoritePairs();
+  const { addEntry } = useConversionLog();
+
+  const {
+    data: ratesData,
+    isError: isRateError,
+    isPending: isRatePending,
+  } = useQuery({
+    queryKey: ["getRates", pair.base, pair.quote],
+    queryFn: async () => {
+      const { data } = await rates.getRates({
+        base: pair.base,
+        quotes: pair.quote,
+      });
+
+      return data;
+    },
+    enabled: pair.base !== pair.quote,
+  });
+
+  const isSameCurrency = pair.base === pair.quote;
+  const rate = isSameCurrency ? 1 : (ratesData?.[0]?.rate ?? 0);
+  const normalizedInput = Number(amount.replace(",", "."));
+  const hasRate =
+    isSameCurrency ||
+    (!isRatePending && !isRateError && ratesData?.[0]?.rate !== undefined);
+  const hasValidConversion =
+    amount.length > 0 &&
+    Number.isFinite(normalizedInput) &&
+    normalizedInput > 0 &&
+    hasRate &&
+    rate > 0;
+  const numericOutput = hasValidConversion ? normalizedInput * rate : 0;
+  const outputValue =
+    hasValidConversion ? numericOutput.toFixed(2) : "0";
+  const conversionSignature = hasValidConversion
+    ? `${pair.base}:${pair.quote}:${normalizedInput}:${rate}`
+    : null;
+  const isCurrentPairFavorite = isFavorite(pair.base, pair.quote);
+  const isLogged =
+    conversionSignature !== null && conversionSignature === loggedSignature;
+
+  const resetLoggedState = () => {
+    setLoggedSignature(null);
+  };
+
+  const handleInputChange = (value: string) => {
+    onAmountChange(value);
+    resetLoggedState();
+  };
+
+  const handleInputCurrencyChange = (currency: string) => {
+    onPairChange({ ...pair, base: currency });
+    resetLoggedState();
+  };
+
+  const handleOutputCurrencyChange = (currency: string) => {
+    onPairChange({ ...pair, quote: currency });
+    resetLoggedState();
+  };
+
+  const handleSwap = () => {
+    onPairChange({ base: pair.quote, quote: pair.base });
+    resetLoggedState();
+  };
+
+  const handleFavorite = () => {
+    const isNowFavorite = toggleFavorite(pair.base, pair.quote);
+    const pairLabel = `${pair.base}/${pair.quote}`;
+
+    setAnnouncement(
+      isNowFavorite
+        ? `${pairLabel} added to favorites.`
+        : `${pairLabel} removed from favorites.`,
+    );
+  };
+
+  const handleLogConversion = () => {
+    if (!hasValidConversion || !conversionSignature || isLogged) {
+      return;
+    }
+
+    addEntry({
+      base: pair.base,
+      inputAmount: normalizedInput,
+      outputAmount: numericOutput,
+      quote: pair.quote,
+      rate,
+    });
+    setLoggedSignature(conversionSignature);
+    setAnnouncement(
+      `${normalizedInput} ${pair.base} converted to ${outputValue} ${pair.quote} was logged.`,
+    );
+  };
+
   return (
     <section aria-labelledby="converter-title">
       <h2
@@ -8,9 +126,9 @@ export const CurrencyConverter = () => {
         CHECK THE RATE
       </h2>
 
-      <div className="rounded-20 bg-[#171717] h-[223px]">
-        <div className="grid gap-150 p-200 md:grid-cols-[1fr_48px_1fr] md:items-end md:gap-150 md:p-250">
-          <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-250">
+      <div className="h-auto rounded-20 bg-[#171717] md:h-[223px]">
+        <div className="grid items-center gap-150 p-200 md:grid-cols-[1fr_48px_1fr]">
+          <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-[20px]">
             <label
               htmlFor="send-amount"
               className="typography-preset-5-medium mb-150 block text-neutral-200"
@@ -19,102 +137,113 @@ export const CurrencyConverter = () => {
             </label>
 
             <div className="flex min-h-600 min-w-0 items-center gap-200">
-              <input
-                id="send-amount"
-                className="typography-preset-1 block min-w-0 flex-1 bg-transparent text-neutral-0 outline-none"
-                defaultValue="1,000"
-                inputMode="decimal"
-                aria-label="Amount to send"
-              />
-
-              <button
-                type="button"
-                className="typography-preset-5-medium flex shrink-0 items-center gap-100 rounded-8 bg-[#2a2a2a] px-150 py-125 text-neutral-0"
-                aria-label="Select send currency"
-              >
-                <img
-                  src="/images/flags/us.webp"
-                  alt=""
-                  className="size-200 rounded-full"
+              <div className="min-w-0 flex-1">
+                <input
+                  value={amount}
+                  onChange={(event) => handleInputChange(event.target.value)}
+                  id="send-amount"
+                  className={cn(
+                    "typography-preset-1 field-sizing-content block h-600 min-w-[1ch] max-w-full rounded-6 border border-transparent bg-transparent px-050 text-neutral-0 outline-none placeholder:text-neutral-200 focus-visible:border-brand-lime",
+                    amount &&
+                      "border-b-[#2a2a2a] hover:border-b-[#666]",
+                  )}
+                  placeholder="0"
+                  inputMode="decimal"
+                  aria-label="Amount to send"
                 />
-                USD
-                <span aria-hidden="true">▾</span>
-              </button>
+              </div>
+
+              <CurrencyPicker
+                label="Select send currency"
+                value={pair.base}
+                onChange={handleInputCurrencyChange}
+              />
             </div>
           </div>
 
-          <div className="flex items-center justify-center pb-150">
-            <button
-              type="button"
-              className="flex size-400 items-center justify-center rounded-10 border border-[#2a2a2a] bg-[#1f1f1f] text-neutral-0"
-              aria-label="Swap currencies"
-            >
-              <img
-                src="/images/icon-exchange.svg"
-                alt=""
-                className="size-200"
-              />
-            </button>
-          </div>
+          <button
+            type="button"
+            className="flex size-600 cursor-pointer items-center justify-center rounded-10 border border-[#2a2a2a] bg-[#1f1f1f] text-neutral-0 outline-none transition-colors hover:bg-[#2a2a2a] focus-visible:border-brand-lime"
+            aria-label="Swap currencies"
+            onClick={handleSwap}
+          >
+            <img src="/images/icon-exchange.svg" alt="" className="size-200" />
+          </button>
 
-          <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-250">
-            <label
-              htmlFor="receive-amount"
-              className="typography-preset-5-medium mb-150 block text-neutral-200"
-            >
+          <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-[20px]">
+            <span className="typography-preset-5-medium mb-150 block text-neutral-200">
               RECEIVE
-            </label>
+            </span>
 
             <div className="flex min-h-600 min-w-0 items-center gap-200">
               <output
-                id="receive-amount"
+                htmlFor="send-amount"
+                aria-live="polite"
                 className="typography-preset-1 block min-w-0 flex-1 text-brand-lime"
               >
-                853.02
+                {outputValue}
               </output>
 
-              <button
-                type="button"
-                className="typography-preset-5-medium flex shrink-0 items-center gap-100 rounded-8 bg-[#2a2a2a] px-150 py-125 text-neutral-0"
-                aria-label="Select receive currency"
-              >
-                <img
-                  src="/images/flags/eu.webp"
-                  alt=""
-                  className="size-200 rounded-full"
-                />
-                EUR
-                <span aria-hidden="true">▾</span>
-              </button>
+              <CurrencyPicker
+                label="Select receive currency"
+                value={pair.quote}
+                onChange={handleOutputCurrencyChange}
+              />
             </div>
           </div>
         </div>
 
         <div className="border-t border-dashed border-[#2a2a2a] px-200 py-200 md:flex md:items-center md:justify-between md:px-250">
           <p className="typography-preset-5 text-neutral-0">
-            1 USD = 0.8530 EUR
+            1 {pair.base} = {rate ? rate.toFixed(4) : "----"} {pair.quote}
           </p>
 
           <div className="mt-200 flex flex-wrap gap-100 md:mt-0">
             <button
               type="button"
-              className="typography-preset-5-medium flex h-400 w-[117px] items-center justify-center gap-100 rounded-6 bg-brand-lime text-black"
+              className={cn(
+                "typography-preset-5-medium flex h-400 w-[117px] cursor-pointer items-center justify-center gap-100 rounded-6 border outline-none transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
+                isCurrentPairFavorite
+                  ? "border-brand-lime bg-brand-lime text-black hover:bg-brand-lime/80"
+                  : "border-brand-lime bg-transparent text-neutral-0 hover:bg-brand-lime/15",
+              )}
+              aria-pressed={isCurrentPairFavorite}
+              onClick={handleFavorite}
             >
               <img
-                src="/images/icon-star-filled.svg"
+                src={
+                  isCurrentPairFavorite
+                    ? "/images/icon-star-filled.svg"
+                    : "/images/icon-star.svg"
+                }
                 alt=""
                 className="size-200"
               />
-              FAVORITED
+              {isCurrentPairFavorite ? "FAVORITED" : "FAVORITE"}
             </button>
 
             <button
               type="button"
-              className="typography-preset-5-medium h-400 w-[132px] rounded-6 border"
+              className={cn(
+                "typography-preset-5-medium flex h-400 w-[132px] items-center justify-center gap-100 rounded-6 border outline-none transition-colors focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-brand-lime",
+                isLogged
+                  ? "cursor-not-allowed border-brand-lime bg-brand-lime text-black"
+                  : hasValidConversion
+                    ? "cursor-pointer border-brand-lime text-neutral-0 hover:bg-brand-lime/15"
+                    : "cursor-not-allowed border-[#3a3a3a] text-[#666]",
+              )}
+              disabled={!hasValidConversion || isLogged}
+              onClick={handleLogConversion}
             >
-              LOG CONVERSION
+              {isLogged && (
+                <img src="/images/icon-check.svg" alt="" className="size-150" />
+              )}
+              {isLogged ? "LOGGED" : "LOG CONVERSION"}
             </button>
           </div>
+          <p className="sr-only" aria-live="polite">
+            {announcement}
+          </p>
         </div>
       </div>
     </section>
