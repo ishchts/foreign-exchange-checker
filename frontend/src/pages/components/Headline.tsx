@@ -25,7 +25,7 @@ export const Headline = () => {
         height={26}
       />
 
-      <div className="typography-preset-6 whitespace-nowrap text-right text-neutral-200">
+      <div className="typography-preset-4 whitespace-nowrap text-right text-neutral-200">
         <p
           aria-hidden="true"
           className="min-w-[14ch] tabular-nums md:min-w-[31ch]"
