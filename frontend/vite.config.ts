@@ -6,6 +6,7 @@ import svgr from 'vite-plugin-svgr'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/foreign-exchange-checker/",
   plugins: [react(), tailwindcss(), svgr()],
   resolve: {
     alias: {
