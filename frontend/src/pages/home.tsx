@@ -12,11 +12,6 @@ export const Home = () => {
     base: "USD",
     quote: "EUR",
   });
-  const normalizedAmount = Number(amount.replace(",", "."));
-  const hasValidAmount =
-    amount.length > 0 &&
-    Number.isFinite(normalizedAmount) &&
-    normalizedAmount > 0;
 
   return (
     <div className="mx-auto max-w-360">
@@ -29,7 +24,11 @@ export const Home = () => {
           pair={pair}
           onPairChange={setPair}
         />
-        <CurrencyInsights pair={pair} hasValidAmount={hasValidAmount} />
+        <CurrencyInsights
+          amount={amount}
+          pair={pair}
+          onPairChange={setPair}
+        />
       </main>
     </div>
   );

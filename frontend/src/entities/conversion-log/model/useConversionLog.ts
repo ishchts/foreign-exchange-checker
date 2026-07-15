@@ -55,5 +55,15 @@ export const useConversionLog = () => {
     return newEntry;
   }, []);
 
-  return { addEntry, entries };
+  const removeEntry = useCallback((id: string) => {
+    conversionLogStore.write((currentEntries) =>
+      currentEntries.filter((entry) => entry.id !== id),
+    );
+  }, []);
+
+  const clearEntries = useCallback(() => {
+    conversionLogStore.write(EMPTY_CONVERSION_LOG);
+  }, []);
+
+  return { addEntry, clearEntries, entries, removeEntry };
 };

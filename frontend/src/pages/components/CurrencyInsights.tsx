@@ -1,8 +1,13 @@
 import type { CurrencyPair } from "@/entities/currency-pair";
+import { useConversionLog } from "@/entities/conversion-log";
+import { useFavoritePairs } from "@/entities/favorite-pair";
 import { rates } from "@/shared/api/api-client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { ConversionLog } from "./ConversionLog";
+import { CurrencyCompare } from "./CurrencyCompare";
+import { FavoritePairs } from "./FavoritePairs";
 import { RateHistoryChart } from "./RateHistoryChart";
 import { RateHistoryMetrics } from "./RateHistoryMetrics";
 import { RateHistoryRangeFilter, RateRange } from "./RateHistoryRangeFilter";
@@ -36,15 +41,24 @@ const getDateRange = (param: RateRange) => {
 };
 
 type CurrencyInsightsProps = {
-  hasValidAmount: boolean;
+  amount: string;
+  onPairChange: (pair: CurrencyPair) => void;
   pair: CurrencyPair;
 };
 
 export const CurrencyInsights = ({
-  hasValidAmount,
+  amount,
+  onPairChange,
   pair,
 }: CurrencyInsightsProps) => {
   const [activeRange, setActiveRange] = useState<RateRange>("1M");
+  const { entries: conversionLogEntries } = useConversionLog();
+  const { favoritePairs } = useFavoritePairs();
+  const normalizedAmount = Number(amount.replace(",", "."));
+  const hasValidAmount =
+    amount.length > 0 &&
+    Number.isFinite(normalizedAmount) &&
+    normalizedAmount > 0;
   const handleActiveRange = (param: RateRange) => {
     setActiveRange(param);
   };
@@ -96,13 +110,13 @@ export const CurrencyInsights = ({
           <TabsTrigger className="px-150 md:px-250" value="FAVORITES">
             FAVORITES
             <span className="min-w-[20px] typography-preset-6 rounded-full bg-brand-lime/15 p-1.25 text-brand-lime">
-              10
+              {favoritePairs.length}
             </span>
           </TabsTrigger>
           <TabsTrigger className="px-150 md:px-250" value="LOG">
             LOG
             <span className="min-w-[20px] typography-preset-6 rounded-full bg-brand-lime/15 p-1.25 text-brand-lime">
-              8
+              {conversionLogEntries.length}
             </span>
           </TabsTrigger>
         </TabsList>
@@ -139,9 +153,15 @@ export const CurrencyInsights = ({
             </div>
           )}
         </TabsContent>
-        <TabsContent value="COMPARE">COMPARE</TabsContent>
-        <TabsContent value="FAVORITES">FAVORITES</TabsContent>
-        <TabsContent value="LOG">LOG</TabsContent>
+        <TabsContent value="COMPARE">
+          <CurrencyCompare amount={amount} base={pair.base} />
+        </TabsContent>
+        <TabsContent value="FAVORITES">
+          <FavoritePairs onPairChange={onPairChange} />
+        </TabsContent>
+        <TabsContent value="LOG">
+          <ConversionLog />
+        </TabsContent>
       </Tabs>
     </section>
   );
