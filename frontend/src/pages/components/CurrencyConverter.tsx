@@ -20,10 +20,10 @@ export const CurrencyConverter = ({
   onPairChange,
   pair,
 }: CurrencyConverterProps) => {
-  const [loggedSignature, setLoggedSignature] = useState<string | null>(null);
+  const [loggedEntryId, setLoggedEntryId] = useState<string | null>(null);
   const [announcement, setAnnouncement] = useState("");
   const { isFavorite, toggleFavorite } = useFavoritePairs();
-  const { addEntry } = useConversionLog();
+  const { addEntry, entries: conversionLogEntries } = useConversionLog();
 
   const {
     data: ratesData,
@@ -57,15 +57,13 @@ export const CurrencyConverter = ({
   const numericOutput = hasValidConversion ? normalizedInput * rate : 0;
   const outputValue =
     hasValidConversion ? numericOutput.toFixed(2) : "0";
-  const conversionSignature = hasValidConversion
-    ? `${pair.base}:${pair.quote}:${normalizedInput}:${rate}`
-    : null;
   const isCurrentPairFavorite = isFavorite(pair.base, pair.quote);
   const isLogged =
-    conversionSignature !== null && conversionSignature === loggedSignature;
+    loggedEntryId !== null &&
+    conversionLogEntries.some((entry) => entry.id === loggedEntryId);
 
   const resetLoggedState = () => {
-    setLoggedSignature(null);
+    setLoggedEntryId(null);
   };
 
   const handleInputChange = (value: string) => {
@@ -100,18 +98,18 @@ export const CurrencyConverter = ({
   };
 
   const handleLogConversion = () => {
-    if (!hasValidConversion || !conversionSignature || isLogged) {
+    if (!hasValidConversion || isLogged) {
       return;
     }
 
-    addEntry({
+    const entry = addEntry({
       base: pair.base,
       inputAmount: normalizedInput,
       outputAmount: numericOutput,
       quote: pair.quote,
       rate,
     });
-    setLoggedSignature(conversionSignature);
+    setLoggedEntryId(entry.id);
     setAnnouncement(
       `${normalizedInput} ${pair.base} converted to ${outputValue} ${pair.quote} was logged.`,
     );
