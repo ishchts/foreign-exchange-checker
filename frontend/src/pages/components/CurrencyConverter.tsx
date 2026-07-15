@@ -4,6 +4,7 @@ import { useFavoritePairs } from "@/entities/favorite-pair";
 import { CurrencyPicker } from "@/features/currency-picker";
 import { rates } from "@/shared/api/api-client";
 import { cn } from "@/shared/lib/cn";
+import { getAssetUrl } from "@/shared/lib/getAssetUrl";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -165,7 +166,11 @@ export const CurrencyConverter = ({
             aria-label="Swap currencies"
             onClick={handleSwap}
           >
-            <img src="/images/icon-exchange.svg" alt="" className="size-200" />
+            <img
+              src={getAssetUrl("images/icon-exchange.svg")}
+              alt=""
+              className="size-200"
+            />
           </button>
 
           <div className="min-w-0 rounded-12 border border-[#2a2a2a] bg-[#1f1f1f] p-200 md:p-250">
@@ -211,8 +216,8 @@ export const CurrencyConverter = ({
               <img
                 src={
                   isCurrentPairFavorite
-                    ? "/images/icon-star-filled.svg"
-                    : "/images/icon-star.svg"
+                    ? getAssetUrl("images/icon-star-filled.svg")
+                    : getAssetUrl("images/icon-star.svg")
                 }
                 alt=""
                 className="size-200"
@@ -234,7 +239,11 @@ export const CurrencyConverter = ({
               onClick={handleLogConversion}
             >
               {isLogged && (
-                <img src="/images/icon-check.svg" alt="" className="size-150" />
+                <img
+                  src={getAssetUrl("images/icon-check.svg")}
+                  alt=""
+                  className="size-150"
+                />
               )}
               {isLogged ? "LOGGED" : "LOG CONVERSION"}
             </button>

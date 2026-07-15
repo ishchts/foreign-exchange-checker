@@ -2,6 +2,7 @@ import {
   type ConversionLogEntry,
   useConversionLog,
 } from "@/entities/conversion-log";
+import { getAssetUrl } from "@/shared/lib/getAssetUrl";
 import { useState } from "react";
 
 const amountFormatter = new Intl.NumberFormat("en-US", {
@@ -76,7 +77,7 @@ const ConversionLogRow = ({
     <p className="typography-preset-5 flex min-w-0 items-center gap-075 truncate text-neutral-0">
       <span>{entry.base}</span>
       <img
-        src="/images/icon-arrow-right.svg"
+        src={getAssetUrl("images/icon-arrow-right.svg")}
         alt=""
         width={11}
         height={11}
@@ -101,7 +102,7 @@ const ConversionLogRow = ({
       className="flex size-500 cursor-pointer items-center justify-center rounded-8 outline-none transition-colors hover:bg-white/5 focus-visible:ring-1 focus-visible:ring-brand-lime"
     >
       <img
-        src="/images/icon-delete.svg"
+        src={getAssetUrl("images/icon-delete.svg")}
         alt=""
         width={16}
         height={16}

@@ -1,6 +1,7 @@
 import { useFavoritePairs } from "@/entities/favorite-pair";
 import { rates } from "@/shared/api/api-client";
 import type { Rate } from "@/shared/api/generated/data-contracts";
+import { getAssetUrl } from "@/shared/lib/getAssetUrl";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 
@@ -58,7 +59,7 @@ const ComparisonRow = ({
   <li className="grid min-h-[56px] grid-cols-[minmax(0,1fr)_auto_40px] items-center gap-100 border-t border-[#2a2a2a] px-150 md:gap-200 md:px-200">
     <div className="flex min-w-0 items-center gap-100">
       <img
-        src={`/images/flags/${flag}.webp`}
+        src={getAssetUrl(`images/flags/${flag}.webp`)}
         alt=""
         width={20}
         height={20}
@@ -89,8 +90,8 @@ const ComparisonRow = ({
       <img
         src={
           isFavorite
-            ? "/images/icon-star-filled.svg"
-            : "/images/icon-star.svg"
+            ? getAssetUrl("images/icon-star-filled.svg")
+            : getAssetUrl("images/icon-star.svg")
         }
         alt=""
         width={16}

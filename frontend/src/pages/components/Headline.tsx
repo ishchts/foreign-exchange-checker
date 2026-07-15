@@ -1,4 +1,5 @@
 import { useCurrencies } from "@/features/currency-picker";
+import { getAssetUrl } from "@/shared/lib/getAssetUrl";
 
 export const Headline = () => {
   const { data, isError, isPending } = useCurrencies();
@@ -19,7 +20,7 @@ export const Headline = () => {
   return (
     <header className="flex h-800 items-center justify-between px-200 md:px-300">
       <img
-        src="/images/logo.svg"
+        src={getAssetUrl("images/logo.svg")}
         alt="FX Checker"
         width={139}
         height={26}

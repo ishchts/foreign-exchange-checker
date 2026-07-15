@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/shared/ui/popover";
+import { getAssetUrl } from "@/shared/lib/getAssetUrl";
 import { Check, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -43,7 +44,7 @@ const CurrencyFlag = ({ code, flag }: { code: string; flag?: string }) => {
 
   return (
     <img
-      src={`/images/flags/${flagCode}.webp`}
+      src={getAssetUrl(`images/flags/${flagCode}.webp`)}
       alt=""
       className="size-200 shrink-0 rounded-full object-cover"
     />

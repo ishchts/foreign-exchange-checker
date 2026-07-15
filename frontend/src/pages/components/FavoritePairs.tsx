@@ -6,6 +6,7 @@ import {
 import { rates } from "@/shared/api/api-client";
 import type { Rate } from "@/shared/api/generated/data-contracts";
 import { cn } from "@/shared/lib/cn";
+import { getAssetUrl } from "@/shared/lib/getAssetUrl";
 import { useQuery } from "@tanstack/react-query";
 import { Star, Triangle } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -104,7 +105,7 @@ const FavoritePairRow = ({
         <span className="typography-preset-4 flex min-w-0 items-center gap-100 text-neutral-0">
           <span>{pair.base}</span>
           <img
-            src="/images/icon-arrow-right.svg"
+            src={getAssetUrl("images/icon-arrow-right.svg")}
             alt=""
             className="size-[11px] shrink-0"
           />
