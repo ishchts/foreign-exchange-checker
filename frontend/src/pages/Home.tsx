@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { CurrencyConverter } from "./components/CurrencyConverter";
 import { CurrencyInsights } from "./components/CurrencyInsights";
+import { CoreWebVitalsLab } from "./components/CoreWebVitalsLab";
 import { Headline } from "./components/Headline";
 import { MarketTicker } from "./components/MarketTicker";
 
@@ -17,6 +18,7 @@ export const Home = () => {
     <div className="mx-auto max-w-360">
       <Headline />
       <MarketTicker />
+      <CoreWebVitalsLab />
       <main className="mx-auto max-w-275 px-200 pt-600 md:px-400">
         <CurrencyConverter
           amount={amount}
